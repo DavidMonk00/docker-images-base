@@ -1,0 +1,17 @@
+FROM dmonk/armv7hf-centos:latest
+
+RUN [ "cross-build-start" ]
+
+RUN install_packages git g++ gcc wget make rpm-build git-core \
+	erlang gcc-c++ boost-devel pugixml-devel python-devel
+
+RUN mkdir dl
+WORKDIR "/dl"
+RUN wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.bz2 && \
+	tar --bzip2 -xf boost_1_72_0.tar.bz2
+WORKDIR "/dl/boost_1_72_0"
+RUN ./bootstrap.sh --prefix=/usr && ./b2 install -j 16
+
+WORKDIR "/"
+
+RUN [ "cross-build-end" ]

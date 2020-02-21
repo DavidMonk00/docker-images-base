@@ -1,0 +1,11 @@
+FROM dmonk/armv7hf-centos-boost:latest
+
+RUN [ "cross-build-start" ]
+
+WORKDIR "/"
+RUN git clone --depth=1 -b v2.7.0  https://github.com/ipbus/ipbus-software.git
+WORKDIR "/ipbus-software"
+RUN make Set=uhal -j 16
+RUN make rpm
+
+RUN [ "cross-build-end" ]
