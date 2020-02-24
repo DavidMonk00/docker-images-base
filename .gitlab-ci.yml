@@ -1,0 +1,13 @@
+stages:
+  - build-centos-base
+
+
+build-armv7hf-centos:
+  stage: build-centos-base
+  tags:
+    - docker-image-build
+  variables:
+    CONTEXT_DIR: "armv7hf-centos/"
+    TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos
+  script: "echo" # unused but this line is required by GitLab CI
+
