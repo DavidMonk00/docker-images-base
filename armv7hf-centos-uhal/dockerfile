@@ -1,4 +1,4 @@
-FROM dmonk/armv7hf-centos-boost:latest
+FROM gitlab-registry.cern.ch/dmonk/docker-images/armv7hf-centos-boost:latest
 
 RUN [ "cross-build-start" ]
 
