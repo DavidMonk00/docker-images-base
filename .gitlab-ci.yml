@@ -1,23 +1,23 @@
 stages:
-  - build-centos-boost
-  - build-centos-uhal
+    - build-centos-boost
+    - build-centos-uhal
 
 
 build-armv7hf-centos-boost:
-  stage: build-centos-boost
-  tags:
-    - docker-image-build
-  variables:
-    CONTEXT_DIR: "armv7hf-centos-boost/"
-    TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-boost
-  script: "echo" # unused but this line is required by GitLab CI
+    stage: build-centos-boost
+    tags:
+        - docker-image-build
+    variables:
+        CONTEXT_DIR: "armv7hf-centos-boost/"
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-boost
+    script: "echo" # unused but this line is required by GitLab CI
   
 build-armv7hf-centos-uhal:
     stage: build-centos-uhal
     tags:
-    - docker-image-build
+        - docker-image-build
     variables:
-    CONTEXT_DIR: "armv7hf-centos-uhal/"
-    TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-uhal
+        CONTEXT_DIR: "armv7hf-centos-uhal/"
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-uhal
     script: "echo" # unused but this line is required by GitLab CI
 
