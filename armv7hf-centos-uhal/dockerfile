@@ -16,6 +16,6 @@ RUN sed -i 's/-bb/-bb --target armv7l/g' uhal/config/mfPythonRPMRules.mk
 
 # RUN cat /usr/lib/rpm/rpmrc
 
-RUN make Set=uhal rpm
+# RUN make Set=uhal rpm
 
 RUN [ "cross-build-end" ]
