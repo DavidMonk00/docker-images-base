@@ -1,0 +1,21 @@
+FROM dmonk/aarch64-centos8:latest
+
+RUN [ "cross-build-start" ]
+
+RUN install_packages epel-release
+RUN install_packages git gcc-c++ wget make rpm-build git-core gcc-c++ \
+	boost-devel pugixml-devel python2-devel
+
+
+# RUN mkdir -p /dl
+# WORKDIR "/dl"
+# RUN wget https://github.com/zeux/pugixml/releases/download/v1.10/pugixml-1.10.tar.gz && \
+# 	tar xvzf pugixml-1.10.tar.gz
+# WORKDIR "/dl/pugixml-1.10"
+# RUN g++ -c -Wall -Werror -fPIC src/pugixml.cpp -Isrc && \
+# 	g++ -shared -o /usr/lib/libpugixml.so pugixml.o && \
+# 	cp src/*.hpp /usr/include/
+# WORKDIR "/"
+# RUN rm -rf "/dl"
+
+RUN [ "cross-build-end" ]
