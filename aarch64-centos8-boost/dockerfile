@@ -8,6 +8,16 @@ RUN install_packages git gcc-c++ wget make rpm-build git-core gcc-c++ \
 
 RUN alternatives --set python /usr/bin/python2
 
+RUN mkdir dl
+WORKDIR "/dl"
+RUN wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.bz2 && \
+	tar --bzip2 -xf boost_1_72_0.tar.bz2
+WORKDIR "/dl/boost_1_72_0"
+RUN ./bootstrap.sh --prefix=/usr && ./b2 install -j 16
+
+WORKDIR "/"
+RUN rm -rf "/dl"
+
 
 # RUN mkdir -p /dl
 # WORKDIR "/dl"
