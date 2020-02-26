@@ -1,4 +1,4 @@
-FROM dmonk/armv7hf-centos:latest
+FROM dmonk/armv7hf-centos7:latest
 
 RUN [ "cross-build-start" ]
 

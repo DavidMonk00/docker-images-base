@@ -4,31 +4,31 @@ stages:
     - build-centos-emp
 
 
-build-armv7hf-centos-boost:
+build-armv7hf-centos7-boost:
     stage: build-centos-boost
     tags:
         - docker-image-build
     variables:
-        CONTEXT_DIR: "armv7hf-centos-boost/"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-boost
+        CONTEXT_DIR: "armv7hf-centos7-boost/"
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-boost
     script: "echo" # unused but this line is required by GitLab CI
-  
-build-armv7hf-centos-uhal:
+
+build-armv7hf-centos7-uhal:
     stage: build-centos-uhal
     tags:
         - docker-image-build
     variables:
-        CONTEXT_DIR: "armv7hf-centos-uhal/"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-uhal
+        CONTEXT_DIR: "armv7hf-centos7-uhal/"
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-uhal
     script: "echo" # unused but this line is required by GitLab CI
 
-build-armv7hf-centos-emp:
+build-armv7hf-centos7-emp:
     stage: build-centos-emp
     tags:
         - docker-image-build
     variables:
-        CONTEXT_DIR: "armv7hf-centos-emp/"
+        CONTEXT_DIR: "armv7hf-centos7-emp/"
         BUILD_ARG_1: "GITLAB_USERNAME=$USERNAME"
         BUILD_ARG_2: "GITLAB_PASSWORD=$PASSWORD"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos-emp
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-emp
     script: "echo" # unused but this line is required by GitLab CI

@@ -1,4 +1,4 @@
-FROM gitlab-registry.cern.ch/dmonk/docker-images/armv7hf-centos-uhal:latest
+FROM gitlab-registry.cern.ch/dmonk/docker-images/armv7hf-centos7-uhal:latest
 
 ARG GITLAB_USERNAME
 ARG GITLAB_PASSWORD
