@@ -15,6 +15,9 @@ RUN wget https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.
 WORKDIR "/dl/boost_1_72_0"
 RUN ./bootstrap.sh --prefix=/usr && ./b2 install -j 16
 
+RUN rm -rf /usr/lib64/libboost_*
+RUN mv -f /usr/lib/libboost_* /usr/lib64/
+
 WORKDIR "/"
 RUN rm -rf "/dl"
 
