@@ -4,50 +4,67 @@ stages:
     - build-centos-emp
 
 
-build-armv7hf-centos7-boost:
+build_kaniko_command:
     stage: build-centos-boost
-    tags:
-        - docker-image-build
-    variables:
-        CONTEXT_DIR: "armv7hf-centos7-boost/"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-boost
-    script: "echo" # unused but this line is required by GitLab CI
-
-build-armv7hf-centos7-uhal:
-    stage: build-centos-uhal
-    tags:
-        - docker-image-build
-    variables:
-        CONTEXT_DIR: "armv7hf-centos7-uhal/"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-uhal
-    script: "echo" # unused but this line is required by GitLab CI
-
-build-armv7hf-centos7-emp:
-    stage: build-centos-emp
-    tags:
-        - docker-image-build
-    variables:
-        CONTEXT_DIR: "armv7hf-centos7-emp/"
-        BUILD_ARG_1: "GITLAB_USERNAME=$USERNAME"
-        BUILD_ARG_2: "GITLAB_PASSWORD=$PASSWORD"
-        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-emp
-    script: "echo" # unused but this line is required by GitLab CI
+    image: 
+        # We recommend using the CERN version of the Kaniko image: gitlab-registry.cern.ch/ci-tools/docker-image-builder
+        name: gitlab-registry.cern.ch/ci-tools/docker-image-builder
+        entrypoint: [""]
+    script:
+        # Prepare Kaniko configuration file
+        - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+        # Build and push the image from the Dockerfile at the root of the project.
+        # To push to a specific docker tag, amend the --destination parameter, e.g. --destination $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+        # See https://docs.gitlab.com/ee/ci/variables/predefined_variables.html#variables-reference for available variables
+        - /kaniko/executor --context $CI_PROJECT_DIR/armv7hf-centos7-boost --dockerfile $CI_PROJECT_DIR/armv7hf-centos7-boost/dockerfile --destination $CI_REGISTRY_IMAGE/armv7hf-centos7-boost
 
 
-build-aarch64-centos8-boost:
-    stage: build-centos-boost
-    tags:
-        - docker-image-build
-    variables:
-        CONTEXT_DIR: "aarch64-centos8-boost/"
-        TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-boost
-    script: "echo" # unused but this line is required by GitLab CI
 
-build-aarch64-centos8-uhal:
-    stage: build-centos-uhal
-    tags:
-        - docker-image-build
-    variables:
-        CONTEXT_DIR: "aarch64-centos8-uhal/"
-        TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-uhal
-    script: "echo" # unused but this line is required by GitLab CI
+# build-armv7hf-centos7-boost:
+#     stage: build-centos-boost
+#     tags:
+#         - docker-image-build
+#     variables:
+#         CONTEXT_DIR: "armv7hf-centos7-boost/"
+#         TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-boost
+    
+#     script: "echo" # unused but this line is required by GitLab CI
+
+# build-armv7hf-centos7-uhal:
+#     stage: build-centos-uhal
+#     tags:
+#         - docker-image-build
+#     variables:
+#         CONTEXT_DIR: "armv7hf-centos7-uhal/"
+#         TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-uhal
+#     script: "echo" # unused but this line is required by GitLab CI
+
+# build-armv7hf-centos7-emp:
+#     stage: build-centos-emp
+#     tags:
+#         - docker-image-build
+#     variables:
+#         CONTEXT_DIR: "armv7hf-centos7-emp/"
+#         BUILD_ARG_1: "GITLAB_USERNAME=$USERNAME"
+#         BUILD_ARG_2: "GITLAB_PASSWORD=$PASSWORD"
+#         TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-emp
+#     script: "echo" # unused but this line is required by GitLab CI
+
+
+# build-aarch64-centos8-boost:
+#     stage: build-centos-boost
+#     tags:
+#         - docker-image-build
+#     variables:
+#         CONTEXT_DIR: "aarch64-centos8-boost/"
+#         TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-boost
+#     script: "echo" # unused but this line is required by GitLab CI
+
+# build-aarch64-centos8-uhal:
+#     stage: build-centos-uhal
+#     tags:
+#         - docker-image-build
+#     variables:
+#         CONTEXT_DIR: "aarch64-centos8-uhal/"
+#         TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-uhal
+#     script: "echo" # unused but this line is required by GitLab CI
