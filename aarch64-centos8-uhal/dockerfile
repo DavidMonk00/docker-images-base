@@ -1,4 +1,4 @@
-FROM gitlab-registry.cern.ch/dmonk/docker-images/aarch64-centos8-boost:latest
+FROM dmonk/aarch64-centos8-boost:latest
 
 RUN [ "cross-build-start" ]
 
@@ -7,15 +7,16 @@ RUN git clone --depth=1 -b v2.7.0  https://github.com/ipbus/ipbus-software.git
 RUN mv /ipbus-software /ipbus-software____________________
 WORKDIR "/ipbus-software____________________"
 RUN make Set=uhal -j 16
-RUN sed -i 's/x86_64/armv7l/g' uhal/config/mfPythonRPMRules.mk
-RUN sed -i 's/bdist_rpm/bdist_rpm --force-arch armv7l/g' uhal/config/mfPythonRPMRules.mk
-RUN sed -i 's/-bb/-bb --target armv7l/g' uhal/config/mfPythonRPMRules.mk
+RUN sed -i 's/x86_64/aarch64/g' uhal/config/mfPythonRPMRules.mk
+RUN sed -i 's/bdist_rpm/bdist_rpm --force-arch aarch64/g' uhal/config/mfPythonRPMRules.mk
+RUN sed -i 's/-bb/-bb --target aarch64/g' uhal/config/mfPythonRPMRules.mk
+RUN sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/python2/g' uhal/gui/pkg/uhal_gui.exe
 # RUN sed -i 's/rpmbuild/setarch armv7l "rpmbuild/g' uhal/config/mfPythonRPMRules.mk
 # RUN sed -i 's/--clean dist\/${PackageName}.spec/--clean dist\/${PackageName}.spec"/g' uhal/config/mfPythonRPMRules.mk
 
 
 # RUN cat /usr/lib/rpm/rpmrc
 
-RUN make Set=uhal install
+# RUN make Set=uhal rpm
 
 RUN [ "cross-build-end" ]
