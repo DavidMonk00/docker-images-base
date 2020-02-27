@@ -10,7 +10,7 @@ RUN make Set=uhal -j 16
 RUN sed -i 's/x86_64/aarch64/g' uhal/config/mfPythonRPMRules.mk
 RUN sed -i 's/bdist_rpm/bdist_rpm --force-arch aarch64/g' uhal/config/mfPythonRPMRules.mk
 RUN sed -i 's/-bb/-bb --target aarch64/g' uhal/config/mfPythonRPMRules.mk
-RUN sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/python2/g' uhal/gui/pkg/uhal_gui.exe
+RUN sed -i 's/#!\/usr\/bin\/env python/#!\/usr\/bin\/env python2/g' uhal/gui/pkg/uhal_gui.exe
 # RUN sed -i 's/rpmbuild/setarch armv7l "rpmbuild/g' uhal/config/mfPythonRPMRules.mk
 # RUN sed -i 's/--clean dist\/${PackageName}.spec/--clean dist\/${PackageName}.spec"/g' uhal/config/mfPythonRPMRules.mk
 
