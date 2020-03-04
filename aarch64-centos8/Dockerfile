@@ -42,34 +42,34 @@ yum clean all' > /usr/sbin/install_packages \
 
 # Install packages for build variant
 RUN yum install -y \
-		ca-certificates \
-		curl \
+		# ca-certificates \
+		# curl \
 		wget \
 		git \
-		mercurial \
+		# mercurial \
 		openssh-clients \
-		subversion \
+		# subversion \
 		autoconf \
 		automake \
-		bzip2-devel \
-		glib2-devel \
+		# bzip2-devel \
+		# glib2-devel \
 		gcc \
 		gcc-c++ \
-		kernel-devel \
-		libcurl-devel \
-		libevent-devel \
-		libffi-devel \
-		libjpeg-devel \
-		libxml2-devel \
-		libxslt-devel \
-		mysql-devel \
+		# kernel-devel \
+		# libcurl-devel \
+		# libevent-devel \
+		# libffi-devel \
+		# libjpeg-devel \
+		# libxml2-devel \
+		# libxslt-devel \
+		# mysql-devel \
 		make \
-		ncurses-devel \
-		openssl-devel \
-		postgresql-devel \
-		readline-devel \
-		sqlite-devel \
-		zlib-devel \
+		# ncurses-devel \
+		# openssl-devel \
+		# postgresql-devel \
+		# readline-devel \
+		# sqlite-devel \
+		# zlib-devel \
 	&& yum clean all
 
 RUN curl -SLO "http://resin-packages.s3.amazonaws.com/resin-xbuild/v1.0.0/resin-xbuild1.0.0.tar.gz" \
@@ -86,8 +86,8 @@ ENV UDEV off
 COPY entry.sh /usr/bin/entry.sh
 ENTRYPOINT ["/usr/bin/entry.sh"]
 
-RUN curl -SLO "https://raw.githubusercontent.com/balena-io-library/base-images/a95300eda2320833e537ca20d728a870bf02177d/scripts/assets/tests/test-os.sh" \
-  && echo "Running test-os" \
-  && chmod +x test-os.sh \
-  && bash test-os.sh centos 8 \
-  && rm -rf test-os.sh
+# RUN curl -SLO "https://raw.githubusercontent.com/balena-io-library/base-images/a95300eda2320833e537ca20d728a870bf02177d/scripts/assets/tests/test-os.sh" \
+#   && echo "Running test-os" \
+#   && chmod +x test-os.sh \
+#   && bash test-os.sh centos 8 \
+#   && rm -rf test-os.sh
