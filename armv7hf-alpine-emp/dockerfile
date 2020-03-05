@@ -1,0 +1,19 @@
+FROM dmonk/armv7hf-alpine-uhal:latest
+
+ARG GITLAB_USERNAME
+ARG GITLAB_PASSWORD
+
+COPY build-utils /opt/cactus/build-utils
+
+RUN [ "cross-build-start" ]
+
+RUN install_packages py-pip py-setuptools
+RUN pip install click click_didyoumean
+
+WORKDIR "/"
+RUN git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@gitlab.cern.ch/p2-xware/software/emp-toolbox.git
+
+WORKDIR "/emp-toolbox"
+# RUN make -j 8
+
+RUN [ "cross-build-end" ]

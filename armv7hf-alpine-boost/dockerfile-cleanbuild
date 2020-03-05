@@ -1,9 +1,16 @@
-FROM dmonk/armv7hf-centos7:latest
+FROM balenalib/armv7hf-alpine:latest
 
 RUN [ "cross-build-start" ]
 
-RUN install_packages git g++ gcc wget make rpm-build git-core \
-	erlang gcc-c++ boost-devel pugixml-devel python-devel
+RUN install_packages git
+RUN install_packages g++
+RUN install_packages gcc
+RUN install_packages wget
+RUN install_packages make
+RUN install_packages erlang
+RUN install_packages boost-dev
+RUN install_packages pugixml-dev
+RUN install_packages python-dev
 
 RUN mkdir dl
 WORKDIR "/dl"
