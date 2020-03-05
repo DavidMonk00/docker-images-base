@@ -1,0 +1,31 @@
+FROM alpine
+
+ARG GITLAB_USERNAME
+ARG GITLAB_PASSWORD
+
+COPY build-utils /opt/cactus/build-utils
+
+RUN apk add git g++ gcc wget make boost-dev pugixml-dev \
+            python-dev py-pip py-setuptools libc-dev build-base
+RUN pip install click click_didyoumean
+
+
+WORKDIR "/"
+RUN git clone --depth=1 -b v2.7.0  https://github.com/ipbus/ipbus-software.git
+WORKDIR "/ipbus-software"
+RUN sed -i 's/gui/# gui/g' uhal/Makefile
+RUN sed -i 's/tests \\/# tests  \\/g' uhal/Makefile
+RUN make Set=uhal -j 8
+RUN make Set=uhal install
+RUN make Set=uhal clean
+
+WORKDIR "/"
+RUN rm -rf /ipbus-software
+
+RUN git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@gitlab.cern.ch/p2-xware/software/emp-toolbox.git
+
+WORKDIR "/emp-toolbox"
+
+RUN apk add libstdc++
+
+# RUN make -j 8
