@@ -13,6 +13,18 @@ build-armv7hf-centos7-boost:
         TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-boost
     script: "echo" # unused but this line is required by GitLab CI
 
+
+build-armv7hf-centos7-boost-cleanbuild:
+    stage: build-centos-boost
+    tags:
+        - docker-image-build
+    variables:
+        CONTEXT_DIR: "armv7hf-centos7-boost/"
+        DOCKER_FILE: "dockerfile-cleanbuild"
+        TO: ${CI_REGISTRY_IMAGE}/armv7hf-centos7-boost:cleanbuild
+    script: "echo" # unused but this line is required by GitLab CI
+
+
 build-armv7hf-centos7-uhal:
     stage: build-centos-uhal
     tags:
@@ -42,6 +54,18 @@ build-aarch64-centos8-boost:
         CONTEXT_DIR: "aarch64-centos8-boost/"
         TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-boost
     script: "echo" # unused but this line is required by GitLab CI
+
+
+build-aarch64-centos8-boost-cleanbuild:
+    stage: build-centos-boost
+    tags:
+        - docker-image-build
+    variables:
+        CONTEXT_DIR: "aarch64-centos8-boost/"
+        DOCKER_FILE: "dockerfile-cleanbuild"
+        TO: ${CI_REGISTRY_IMAGE}/aarch64-centos8-boost:cleanbuild
+    script: "echo" # unused but this line is required by GitLab CI
+
 
 build-aarch64-centos8-uhal:
     stage: build-centos-uhal
