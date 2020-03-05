@@ -4,7 +4,7 @@ LABEL io.balena.architecture="aarch64"
 LABEL io.balena.qemu.version="4.0.0+balena-aarch64"
 COPY qemu-aarch64-static /usr/bin
 
-RUN yum update -y && yum install -y \
+RUN dnf update -y && dnf install -y \
   ca-certificates \
   findutils \
   gnupg \
@@ -14,7 +14,7 @@ RUN yum update -y && yum install -y \
   which \
   curl \
   iproute \
-  && yum clean all \
+  && dnf clean all \
   && echo $'#!/bin/sh\n\
 set -e\n\
 set -u\n\
@@ -23,8 +23,8 @@ max=2\n\
 until [ $n -gt $max ]; do\n\
   set +e\n\
   (\n\
-    yum update -y &&\n\
-    yum install -y "$@"\n\
+    dnf update -y &&\n\
+    dnf install -y "$@"\n\
   )\n\
   CODE=$?\n\
   set -e\n\
@@ -34,14 +34,14 @@ until [ $n -gt $max ]; do\n\
   if [ $n -eq $max ]; then\n\
     exit $CODE\n\
   fi\n\
-  echo "yum failed, retrying"\n\
+  echo "dnf failed, retrying"\n\
   n=$(($n + 1))\n\
 done\n\
-yum clean all' > /usr/sbin/install_packages \
+dnf clean all' > /usr/sbin/install_packages \
   && chmod 0755 "/usr/sbin/install_packages"
 
 # Install packages for build variant
-RUN yum install -y \
+RUN dnf install -y \
 		# ca-certificates \
 		# curl \
 		wget \
@@ -70,7 +70,7 @@ RUN yum install -y \
 		# readline-devel \
 		# sqlite-devel \
 		# zlib-devel \
-	&& yum clean all
+	&& dnf clean all
 
 RUN curl -SLO "http://resin-packages.s3.amazonaws.com/resin-xbuild/v1.0.0/resin-xbuild1.0.0.tar.gz" \
   && echo "1eb099bc3176ed078aa93bd5852dbab9219738d16434c87fc9af499368423437  resin-xbuild1.0.0.tar.gz" | sha256sum -c - \

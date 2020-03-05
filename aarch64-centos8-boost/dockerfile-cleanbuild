@@ -1,0 +1,38 @@
+FROM dmonk/aarch64-centos8:latest
+
+RUN [ "cross-build-start" ]
+
+RUN install_packages epel-release
+RUN install_packages git gcc-c++ wget make rpm-build git-core gcc-c++ pugixml-devel python2-devel python3-devel
+
+RUN mkdir dl
+WORKDIR "/dl"
+RUN wget -q https://dl.bintray.com/boostorg/release/1.72.0/source/boost_1_72_0.tar.bz2 && \
+	tar --bzip2 -xf boost_1_72_0.tar.bz2
+WORKDIR "/dl/boost_1_72_0"
+RUN ./bootstrap.sh --prefix=/usr --with-libraries=chrono,thread,program_options,test,filesystem,date_time,regex,python
+RUN echo "import toolset : using ;" >> project-config.jam
+RUN echo "using python : 2.7 ;" >> project-config.jam
+RUN ./b2 install -j 8
+
+RUN rm -rf /usr/lib64/libboost_*
+RUN mv -f /usr/lib/libboost_* /usr/lib64/
+
+WORKDIR "/"
+RUN rm -rf "/dl"
+
+
+# RUN mkdir -p /dl
+# WORKDIR "/dl"
+# RUN wget https://github.com/zeux/pugixml/releases/download/v1.10/pugixml-1.10.tar.gz && \
+# 	tar xvzf pugixml-1.10.tar.gz
+# WORKDIR "/dl/pugixml-1.10"
+# RUN g++ -c -Wall -Werror -fPIC src/pugixml.cpp -Isrc && \
+# 	g++ -shared -o /usr/lib/libpugixml.so pugixml.o && \
+# 	cp src/*.hpp /usr/include/
+# WORKDIR "/"
+# RUN rm -rf "/dl"
+
+# RUN alternatives --set python /usr/bin/python2
+
+RUN [ "cross-build-end" ]
