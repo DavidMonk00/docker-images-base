@@ -1,4 +1,4 @@
-FROM dmonk/aarch64-centos8-boost:latest
+FROM gitlab-registry.cern.ch/dmonk/docker-images/aarch64-centos8-boost:latest
 
 RUN [ "cross-build-start" ]
 
