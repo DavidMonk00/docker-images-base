@@ -1,12 +1,14 @@
-FROM alpine
+FROM ubuntu
 
 ARG GITLAB_USERNAME
 ARG GITLAB_PASSWORD
 
 COPY build-utils /opt/cactus/build-utils
 
-RUN apk add git g++ gcc wget make boost-dev pugixml-dev \
-            python-dev py-pip py-setuptools libc-dev build-base
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install git g++ gcc wget make libboost-all-dev \
+                       libpugixml-dev python-dev python-pip \
+                       python-setuptools
 RUN pip install click click_didyoumean
 
 
@@ -25,7 +27,5 @@ RUN rm -rf /ipbus-software
 RUN git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@gitlab.cern.ch/p2-xware/software/emp-toolbox.git
 
 WORKDIR "/emp-toolbox"
-
-RUN apk add libstdc++
 
 # RUN make -j 8

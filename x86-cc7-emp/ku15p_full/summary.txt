@@ -1,0 +1,8 @@
+build host: runner-sLU9P8x4-project-32301-concurrent-13
+md5: ee8ed6c44d1ecf4f67137ecd52240d01ed50182d
+name: serenity_dc_ku15p_sm1_v2
+time: Sun, 01 Dec 2019 18:28:51 +0000
+toolset: vivado
+topCmp: projects/examples/serenity/dc_ku15p
+topDep: sm1_v2/top.dep
+topPkg: emp-fwk

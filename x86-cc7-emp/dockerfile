@@ -1,0 +1,77 @@
+FROM cern/cc7-base as build
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+ARG GITLAB_USERNAME
+ARG GITLAB_PASSWORD
+
+COPY build-utils /opt/cactus/build-utils
+RUN chmod 700 /opt/cactus/build-utils/*
+
+RUN yum install -y make rpm-build git-core \
+    gcc-c++-4.8.5 \
+    boost-devel-1.53.0 pugixml-devel-1.8 \
+    # python-devel \
+    # python-pip
+RUN yum clean all
+
+# RUN pip install --upgrade pip
+# RUN pip install click click_didyoumean pytest pyyaml pylint
+
+
+WORKDIR "/"
+RUN git clone --depth=1 -b v2.7.0  https://github.com/ipbus/ipbus-software.git
+WORKDIR "/ipbus-software"
+RUN sed -i 's/gui/# gui/g' uhal/Makefile
+RUN sed -i 's/tests \\/# tests  \\/g' uhal/Makefile
+RUN sed -i 's/pycohal \\/# pycohal  \\/g' uhal/Makefile
+RUN make Set=uhal -j 8
+RUN make Set=uhal install
+
+WORKDIR "/"
+RUN git clone https://${GITLAB_USERNAME}:${GITLAB_PASSWORD}@gitlab.cern.ch/p2-xware/software/emp-toolbox.git
+WORKDIR "/emp-toolbox"
+RUN sed -i 's/python/# python/g' Makefile
+RUN make -j 8
+
+WORKDIR "/"
+RUN git clone https://gitlab.cern.ch/dmonk/empbutler-cpp.git
+WORKDIR "/empbutler-cpp"
+RUN sed -i 's/EMP_ROOT = \/home\/cmx\/mp801\/emp-toolboxtest\//EMP_ROOT = \/emp-toolbox\//g' envserenity
+RUN make -j 8 lib && make executable
+
+
+FROM scratch as clean
+COPY --from=build / /
+
+RUN yum erase -y perl gcc
+RUN rm -rf /var/cache/*
+RUN rm -rf /ipbus-software
+RUN rm -rf /emp-toolbox/*/obj && rm -rf /empbutler-cpp/build
+RUN rm -rf /usr/include/boost/phoenix
+RUN rm -rf /usr/include/boost/fusion
+RUN rm -rf /usr/include/boost
+RUN rm -rf /usr/include
+RUN rm -rf /usr/lib64/python2.7
+RUN rm -rf /var/lib/rpm
+RUN rm -rf /usr/libexec/gcc
+RUN rm -rf /var/lib/rpm
+RUN rm -rf /var/lib/yum
+RUN rm -rf /var
+
+
+FROM scratch
+COPY --from=clean / /
+# COPY --from=clean /bin /bin
+# COPY --from=clean /usr /usr
+# COPY --from=clean /usr/lib64 /usr/lib64
+# COPY --from=clean /usr/lib /usr/lib
+# COPY --from=clean /emp-toolbox /emp-toolbox
+# COPY --from=clean /empbutler-cpp /empbutler-cpp
+
+
+COPY entry.sh /entry.sh
+COPY ku15p_full /bitfiles/ku15p_full
+COPY serenity_connections.xml /serenity_connections.xml
+RUN chmod +x /entry.sh
+
+ENTRYPOINT ["/entry.sh"]
