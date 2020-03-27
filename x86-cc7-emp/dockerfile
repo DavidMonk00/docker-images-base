@@ -77,6 +77,7 @@ RUN chmod +x /entry.sh
 
 ENV FLASK_APP app.py
 ENV FLASK_RUN_HOST 0.0.0.0
+ENV LC_ALL en_US.utf8
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
 RUN useradd -ms /bin/bash user
@@ -84,4 +85,4 @@ WORKDIR /home/user
 COPY . .
 
 ENTRYPOINT ["/entry.sh"]
-CMD ["mod_wsgi-express", "start-server", "app.wsgi", "--port=80", "--user", "user", "--group", "user"]
+CMD ["flask", "run", "--port", "80"]
