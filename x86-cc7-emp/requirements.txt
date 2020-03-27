@@ -1,0 +1,4 @@
+flask
+redis
+Flask-API
+mod_wsgi-standalone

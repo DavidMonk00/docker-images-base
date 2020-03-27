@@ -10,6 +10,7 @@ RUN chmod 700 /opt/cactus/build-utils/*
 RUN yum install -y make rpm-build git-core \
     gcc-c++-4.8.5 \
     boost-devel-1.53.0 pugixml-devel-1.8 \
+    python3-devel httpd-devel kernel-devel
     # python-devel \
     # python-pip
 RUN yum clean all
@@ -43,20 +44,20 @@ RUN make -j 8 lib && make executable
 FROM scratch as clean
 COPY --from=build / /
 
-RUN yum erase -y perl gcc
-RUN rm -rf /var/cache/*
-RUN rm -rf /ipbus-software
-RUN rm -rf /emp-toolbox/*/obj && rm -rf /empbutler-cpp/build
-RUN rm -rf /usr/include/boost/phoenix
-RUN rm -rf /usr/include/boost/fusion
-RUN rm -rf /usr/include/boost
-RUN rm -rf /usr/include
-RUN rm -rf /usr/lib64/python2.7
-RUN rm -rf /var/lib/rpm
-RUN rm -rf /usr/libexec/gcc
-RUN rm -rf /var/lib/rpm
-RUN rm -rf /var/lib/yum
-RUN rm -rf /var
+# RUN yum erase -y perl gcc
+# RUN rm -rf /var/cache/*
+# RUN rm -rf /ipbus-software
+# RUN rm -rf /emp-toolbox/*/obj && rm -rf /empbutler-cpp/build
+# RUN rm -rf /usr/include/boost/phoenix
+# RUN rm -rf /usr/include/boost/fusion
+# RUN rm -rf /usr/include/boost
+# RUN rm -rf /usr/include
+# RUN rm -rf /usr/lib64/python2.7
+# RUN rm -rf /var/lib/rpm
+# RUN rm -rf /usr/libexec/gcc
+# RUN rm -rf /var/lib/rpm
+# RUN rm -rf /var/lib/yum
+# RUN rm -rf /var
 
 
 FROM scratch
@@ -74,4 +75,13 @@ COPY ku15p_full /bitfiles/ku15p_full
 COPY serenity_connections.xml /serenity_connections.xml
 RUN chmod +x /entry.sh
 
+ENV FLASK_APP app.py
+ENV FLASK_RUN_HOST 0.0.0.0
+COPY requirements.txt requirements.txt
+RUN python3 -m pip install -r requirements.txt
+RUN useradd -ms /bin/bash user
+WORKDIR /home/user
+COPY . .
+
 ENTRYPOINT ["/entry.sh"]
+CMD ["mod_wsgi-express", "start-server", "app.wsgi", "--port=80", "--user", "user", "--group", "user"]
