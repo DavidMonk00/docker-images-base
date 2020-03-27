@@ -10,7 +10,7 @@ RUN chmod 700 /opt/cactus/build-utils/*
 RUN yum install -y make rpm-build git-core \
     gcc-c++-4.8.5 \
     boost-devel-1.53.0 pugixml-devel-1.8 \
-    python3-devel httpd-devel kernel-devel
+    python3-devel
     # python-devel \
     # python-pip
 RUN yum clean all
@@ -80,8 +80,6 @@ ENV FLASK_RUN_HOST 0.0.0.0
 ENV LC_ALL en_US.utf8
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
-RUN useradd -ms /bin/bash user
-WORKDIR /home/user
 COPY . .
 
 ENTRYPOINT ["/entry.sh"]
