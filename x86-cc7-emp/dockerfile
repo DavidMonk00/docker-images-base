@@ -69,18 +69,19 @@ COPY --from=clean / /
 # COPY --from=clean /emp-toolbox /emp-toolbox
 # COPY --from=clean /empbutler-cpp /empbutler-cpp
 
-
+COPY . .
 COPY entry.sh /entry.sh
 COPY ku15p_full /bitfiles/ku15p_full
 COPY serenity_connections.xml /serenity_connections.xml
-RUN chmod +x /entry.sh
+
 
 ENV FLASK_APP app.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV LC_ALL en_US.utf8
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
-COPY . .
+
+RUN chmod +x /entry.sh
 
 ENTRYPOINT ["/entry.sh"]
-CMD ["flask", "run", "--port", "80"]
+CMD ["flask", "run"]
